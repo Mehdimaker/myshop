@@ -1,0 +1,121 @@
+nav
+  h2 MyShop
+  h4.wlc Welcome #{@current_user.name} !
+  #welcolm 
+    button.btn.btn-danger  data-target="#logout" data-toggle="modal" type="button" 
+      | Logout      
+      span class="glyphicon glyphicon-off"
+    button.btn.btn-primary data-target="#profile" data-toggle="modal" type="button" 
+      | Profile          
+      span class="glyphicon glyphicon-cog"
+    #logout.modal.fade aria-labelledby="myModalLabel" role="dialog" tabindex="-1" 
+      .modal-dialog.modal-sm role="document" 
+        .modal-content
+          form action="/logout" method="post" 
+            .modal-header
+              h4 Do you want to disconect ?
+            .modal-footer
+              button.btn.btn-default type="button" data-dismiss="modal" aria-hidden="true" No
+              button.btn.btn-default type="submit" Yes
+
+    #profile.modal.fade aria-labelledby="myModalLabel" role="dialog" tabindex="-1" 
+      .modal-dialog.modal-sm role="document" 
+        .modal-content
+          form action="/editprofile" method="post" 
+            .modal-header
+             h4 Edit your profile:
+            .modal-body
+              .input-group
+                span.input-group-addon
+                  span class="glyphicon glyphicon-user" aria-hidden="true"
+                input type="text" class="form-control" placeholder="#{@current_user.name}" name="name"
+            .modal-footer
+              button.btn.btn-default type="button" data-dismiss="modal" aria-hidden="true" Cancel
+              button.btn.btn-success type="submit" Save
+                   
+main.row  
+  #action.col-xs-2
+    h3 Menu
+    button.btn.btn-default data-target="#productadd" data-toggle="modal" type="button" 
+      | Add 
+      span class="glyphicon glyphicon-plus"
+    #productadd.modal.fade aria-labelledby="myModalLabel" role="dialog" tabindex="-1" 
+      .modal-dialog.modal-sm role="document" 
+        .modal-content
+          form action="/products/add" method="post" 
+            .modal-header
+              h4 Add Product
+            .modal-body
+              input.form-control type="text" name="name" placeholder="Enter a name" 
+              input.form-control type="text" name="price" placeholder="Enter a price"
+              input.form-control type="text" name="stock" placeholder="Enter a stock" 
+              input.form-control type="text" name="shipping_cost" placeholder="Enter a shipping cost"
+            .modal-footer
+              button.btn.btn-default type="button" data-dismiss="modal" aria-hidden="true" Cancel
+              button.btn.btn-success type="submit" Confirm
+  
+    button.btn.btn-default data-target="#productdelete" data-toggle="modal" type="button" 
+      | Delete 
+      span class="glyphicon glyphicon-trash"
+    #productdelete.modal.fade aria-labelledby="myModalLabel" role="dialog" tabindex="-1" 
+      .modal-dialog.modal-sm role="document" 
+        .modal-content
+          form action="/products/delete" method="post"  
+            .modal-header
+              h4 Are you sure to delete this element :
+            .modal-body
+              div ng-repeat="pselected in pselecteds"
+                p ng-bind="pselected.name"
+                input value="{{pselected.id}}" name="{{pselected.id}}" style="display:none"
+            .modal-footer
+              button.btn.btn-default type="button" data-dismiss="modal" aria-hidden="true" No
+              button.btn.btn-default type="submit" Yes
+     
+    button.btn.btn-default data-target="#productedit" data-toggle="modal" type="button" 
+      | Edit
+      span class="glyphicon glyphicon-pencil"
+    #productedit.modal.fade aria-labelledby="myModalLabel" role="dialog" tabindex="-1" 
+      .modal-dialog.modal-lg role="document" 
+        .modal-content
+          form action="/products/edit" method="post" 
+            .modal-header
+              h4 Edit this products
+            .modal-body
+              table.table
+                tr
+                  th Name
+                  th Price
+                  th Stock
+                  th shipping cost
+                  tr ng-repeat="pselected in pselecteds"
+                    td
+                      input.form-control type="text" value="{{pselected.name}}" name="{{pselected.id}}name"
+                    td
+                      input.form-control type="text" value="{{pselected.price}}" name="{{pselected.id}}price"
+                    td
+                      input.form-control type="text" value="{{pselected.stock}}" name="{{pselected.id}}stock"
+                    td
+                      input.form-control type="text" value="{{pselected.shipping_cost}}" name="{{pselected.id}}shipping_cost"
+            .modal-footer
+              button.btn.btn-default type="button" data-dismiss="modal" aria-hidden="true" Cancel
+              button.btn.btn-success type="submit" Save                
+  #list.col-xs-10
+    h3 Admin Dashboard
+    table.table
+      tr
+        th
+        th Id
+        th Name
+        th Price
+        th Stock
+        th shipping cost
+        // ajouter colonne user avec role pour admin
+      - @products.each do |product|
+        tr 
+          td 
+            input id="checkbox" type="checkbox"ng-model="select#{product.id}" ng-click="addselected(#{product.id})" 
+          td = product.id.to_s 
+          td = product.name 
+          td = "#{(product.price.to_f)/100}$"         
+          td = product.stock.to_s 
+          td = "#{(product.shipping_cost.to_f)/100}$" 

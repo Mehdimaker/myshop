@@ -1,0 +1,16 @@
+doctype html
+html ng-app="app" 
+  head
+    title My SHOP
+    link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"
+    link rel="stylesheet" href="/app.css"
+  body.container ng-controller="appCtrl" 
+
+    == yield
+
+    script src="http://code.jquery.com/jquery-1.11.3.min.js"
+    script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"
+    script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.16/angular.min.js"
+    script type="text/javascript" src="/app.js"
+  
+    

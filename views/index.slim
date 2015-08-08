@@ -1,0 +1,110 @@
+nav
+  h2 MyShop
+  h4.wlc Welcolme Anonyme !
+  #welcolm
+    button.btn.btn-primary data-target="#signin" data-toggle="modal" type="button" Sign in
+    button.btn.btn-default data-target="#signup" data-toggle="modal" type="button" Sign up
+    #signin.modal.fade aria-labelledby="myModalLabel" role="dialog" tabindex="-1" 
+      .modal-dialog.modal-sm role="document" 
+        .modal-content
+          form action="/signin" method="post" 
+            .modal-header
+              h4 Sign in
+            .modal-body
+              .input-group
+                span.input-group-addon
+                  span class="glyphicon glyphicon-user" aria-hidden="true"
+                input type="text" class="form-control" placeholder="Username" name="name"
+              .input-group
+                span.input-group-addon
+                  span class="glyphicon glyphicon-lock" aria-hidden="true"
+                input type="text" class="form-control" placeholder="Password"name="password"
+            .modal-footer
+              button.btn.btn-default type="button" data-dismiss="modal" aria-hidden="true" Cancel
+              button.btn.btn-success type="submit" Confirm
+
+    #signup.modal.fade aria-labelledby="myModalLabel" role="dialog" tabindex="-1" 
+      .modal-dialog.modal-sm role="document" 
+        .modal-content
+          form action="/signup" method="post" 
+            .modal-header
+              h4 Sign up
+            .modal-body
+              .input-group
+                span.input-group-addon
+                  span class="glyphicon glyphicon-user" aria-hidden="true"
+                input type="text" class="form-control" placeholder="Your username" name="name"
+              .input-group
+                span.input-group-addon
+                  span class="glyphicon glyphicon-lock" aria-hidden="true"
+                input type="text" class="form-control" placeholder="Your password"name="password"
+              .input-group
+                span.input-group-addon
+                  span class="glyphicon glyphicon-lock" aria-hidden="true"
+                input type="text" class="form-control" placeholder="Repeat your password" name="password2"
+            .modal-footer
+              button.btn.btn-default type="button" data-dismiss="modal" aria-hidden="true" Cancel
+              button.btn.btn-success type="submit" Confirm
+main.row  
+  #list.col-xs-12
+    h3 Products
+    table.table
+      tr
+        th Id
+        th Name
+        th Price
+        th Stock
+        th shipping cost
+      - @products.each do |product|
+        tr 
+          td = product.id.to_s 
+          td = product.name 
+          td = "#{(product.price.to_f)/100}$"      
+          td = product.stock.to_s
+          td = "#{(product.shipping_cost.to_f)/100}$"    
+
+  #list.col-xs-12
+    h3 Cart_products
+    table.table
+      tr
+        th Id
+        th Product id
+        th Cart id
+        th Quantity
+      - @cart_products.each do |cart_product|
+        tr 
+          td = cart_product.id.to_s 
+          td = cart_product.product_id.to_s 
+          td = cart_product.cart_id.to_s  
+          td = cart_product.quantity.to_s
+
+  #list.col-xs-12
+    h3 Carts
+    table.table
+      tr
+        th Id
+        th User_id
+        th Status
+        th Created at
+      - @carts.each do |cart|
+        tr 
+          td = cart.id.to_s 
+          td = cart.user_id.to_s
+          td = cart.status  
+          td = cart.created_at
+
+  #list.col-xs-12
+    h3 Users
+    table.table
+      tr
+        th Id
+        th Name
+        th Password
+        th Role
+      - @users.each do |user|
+        tr 
+          td = user.id.to_s 
+          td = user.name 
+          td = user.password_digest
+          td = user.role
+        

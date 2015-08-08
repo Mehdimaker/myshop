@@ -1,0 +1,121 @@
+nav
+  h2 MyShop
+  h4.wlc Welcome #{@current_user.name} !
+  #welcolm
+    button.btn.btn-danger data-target="#logout" data-toggle="modal" type="button" 
+      | Logout      
+      span class="glyphicon glyphicon-off"
+    button.btn.btn-primary data-target="#profile" data-toggle="modal" type="button" 
+      | Profile          
+      span class="glyphicon glyphicon-cog"
+    #logout.modal.fade aria-labelledby="myModalLabel" role="dialog" tabindex="-1" 
+      .modal-dialog.modal-sm role="document" 
+        .modal-content
+          form action="/logout" method="post" 
+            .modal-header
+              h4 Do you want to disconect ?
+            .modal-footer
+              button type="button" data-dismiss="modal" aria-hidden="true" No
+              button type="submit" Yes
+
+    #profile.modal.fade aria-labelledby="myModalLabel" role="dialog" tabindex="-1" 
+      .modal-dialog.modal-sm role="document" 
+        .modal-content
+          form action="/editprofile" method="post" 
+            .modal-header
+             h4 Edit profile
+            .modal-body
+              .input-group
+                span.input-group-addon
+                  span class="glyphicon glyphicon-user" aria-hidden="true"
+                input type="text" class="form-control" placeholder="#{@current_user.name}" name="name"
+            .modal-footer
+              button type="button" data-dismiss="modal" aria-hidden="true" Cancel
+              button type="submit" Save
+                   
+main.row  
+  #action.col-xs-2
+    h3 Menu
+    button.btn.btn-default.menu data-target="#cart" data-toggle="modal" type="button" 
+      | Cart
+      span class="badge" 
+        | #{@current_products.size}
+    #cart.modal.fade aria-labelledby="myModalLabel" role="dialog" tabindex="-1" 
+      .modal-dialog.modal-md role="document" 
+        .modal-content
+          form action="/editprofile" method="post" 
+            .modal-header
+              h4 My cart
+            .modal-body
+              table.table
+                tr
+                  th Product
+                  th Price
+                  th Quantity
+                  th Total
+                - @current_products.each do |product|
+                  tr
+                    td = Product.find(product.product_id).name
+                    td = Product.find(product.product_id).price.to_f/100
+                    td = product.quantity
+                    td = Product.find(product.product_id).price.to_f/100*product.quantity
+                tr
+                  td
+                  td
+                  th Shipping cost
+                tr
+                  td
+                  td
+                  th Total HT
+                tr
+                  td
+                  td
+                  th.success Total TTC
+                  td.success 
+
+            .modal-footer
+              button.btn.btn-default type="button" data-dismiss="modal" aria-hidden="true" Cancel
+              button.btn.btn-success type="submit" Buy
+    button.btn.btn-default data-target="#commands" data-toggle="modal" type="button" 
+      | Commands
+      span class="badge" 3 
+    #commands.modal.fade aria-labelledby="myModalLabel" role="dialog" tabindex="-1" 
+      .modal-dialog.modal-md role="document" 
+        .modal-content
+          form action="/editprofile" method="post" 
+            .modal-header
+             h4 My commands
+            .modal-body
+             
+            .modal-footer
+              button.btn.btn-default type="button" data-dismiss="modal" aria-hidden="true" Cancel
+              button.btn.btn-success type="submit" Buy            
+  #list.col-xs-10
+    h3 Products list
+    table.table
+      tr
+        th Name
+        th Price
+        th Stock
+        th shipping cost
+        th Action
+      - @products.each do |product|
+        tr 
+          td = product.name 
+          td = "#{(product.price.to_f)/100}$"      
+          td = product.stock.to_s
+          td = "#{(product.shipping_cost.to_f)/100}$" 
+          td
+            button.btn.btn-primary data-target="#addtocart#{product.id}" data-toggle="modal" type="button" Add
+            div.modal.fade id="addtocart#{product.id}" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" 
+              .modal-dialog.modal-md role="document" 
+                .modal-content
+                  form action="/cart_product/add" method="post" 
+                    .modal-header
+                      h4 How many do you want to add ?
+                    .modal-body
+                      input type="hidden" name="product_id" value="#{product.id.to_s}"  
+                      input type="text" placeholder="quantity" name="quantity"
+                    .modal-footer
+                      button.btn.btn-default type="button" data-dismiss="modal" aria-hidden="true" Cancel
+                      button.btn.btn-success type="submit" Add
