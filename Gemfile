@@ -5,7 +5,7 @@ gem "sinatra"
 gem "sinatra-activerecord"
 gem "sqlite3"
 gem "rake"
-
+gem "bcrypt"
 gem "slim"
 gem 'require_all'
 gem 'shotgun'
